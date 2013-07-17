@@ -53,3 +53,30 @@ else
     module_path node[:passenger][:rbenv][:module_path]
   end
 end
+
+unless node[:passenger][:web_app].nil?
+  node[:passenger][:web_app].each do |app|
+    web_app app[:name] do
+      docroot app[:docroot]
+      server_name app[:server_name]
+      server_aliases ([app[:name],node[:hostname]]+[*app[:server_aliases]]).uniq.compact
+      rails_env app[:rails_env]
+    end
+  end
+end
+
+node[:passenger][:rack_app].each do |app|
+  rack_app app[:name] do
+    docroot app[:docroot]
+    server_name app[:server_name]
+  end
+end
+
+=begin
+web_app "myproj" do
+  docroot "/var/www/public"
+  server_name "myproj.#{node[:domain]}"
+  server_aliases [ "myproj", node[:hostname] ]
+  rails_env "production"
+end
+=end

@@ -1,0 +1,8 @@
+<VirtualHost *:80>
+    ServerName <%= @params[:server_name] %>
+    DocumentRoot <%= @params[:docroot] %>/public
+    <Directory <%= @params[:docroot] %>/public>
+        Allow from all
+        Options -MultiViews
+    </Directory>
+</VirtualHost>
