@@ -4,9 +4,9 @@
   DocumentRoot <%= @params[:docroot] %>/public
 
   RailsBaseURI /
-	<% unless @params[:rails_env].nil? %>
+<% unless @params[:rails_env].nil? %>
   RailsEnv <%= @params[:rails_env] %>
-	<% end %>
+<% end %>
 
   <Directory <%= @params[:docroot] %>>
     Options FollowSymLinks
