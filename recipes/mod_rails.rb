@@ -71,12 +71,3 @@ node[:passenger][:rack_app].each do |app|
     server_name app[:server_name]
   end
 end
-
-=begin
-web_app "myproj" do
-  docroot "/var/www/public"
-  server_name "myproj.#{node[:domain]}"
-  server_aliases [ "myproj", node[:hostname] ]
-  rails_env "production"
-end
-=end
