@@ -57,17 +57,20 @@ end
 unless node[:passenger][:web_app].nil?
   node[:passenger][:web_app].each do |app|
     web_app app[:name] do
-      docroot app[:docroot]
+      docroot app[:application_root]
       server_name app[:server_name]
       server_aliases ([app[:name],node[:hostname]]+[*app[:server_aliases]]).uniq.compact
       rails_env app[:rails_env]
+      port (app[:port]) ? app[:port] : '80'
     end
   end
 end
 
-node[:passenger][:rack_app].each do |app|
-  rack_app app[:name] do
-    docroot app[:docroot]
-    server_name app[:server_name]
+unless node[:passenger][:rack_app].nil?
+  node[:passenger][:rack_app].each do |app|
+    rack_app app[:name] do
+      docroot app[:docroot]
+      server_name app[:server_name]
+    end
   end
 end

@@ -62,10 +62,16 @@ else
     version node[:passenger][:version] if node[:passenger][:version]
   end
 
+  passenger_bin_path = "#{node[:passenger][:rbenv][:root_path]}/bin"
+
   rbenv_script "passenger_module" do
+    not_if {
+      ::File.exists?(passenger_bin_path) &&
+      "#{passenger_bin_path}/passenger -version | grep '#{node[:passenger][:version]}'"
+    }
     rbenv_version node[:passenger][:rbenv][:version]
     code <<-EOH
-      passenger-install-apache2-module --auto
+      #{passenger_bin_path}/passenger-install-apache2-module --auto
     EOH
     creates node[:passenger][:rbenv][:module_path]
   end

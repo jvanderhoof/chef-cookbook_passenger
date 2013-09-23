@@ -1,9 +1,13 @@
 <% unless node[:passenger][:rbenv][:enabled] %>
   LoadModule passenger_module <%= node[:passenger][:module_path] %>
   PassengerRoot <%= node[:passenger][:root_path] %>
-  PassengerRuby <%= node[:languages][:ruby][:ruby_bin] %>
+  PassengerRuby <%= node[:passenger][:default_ruby] %>
 <% else %>
   LoadModule passenger_module <%= node[:passenger][:rbenv][:module_path] %>
   PassengerRoot <%= node[:passenger][:rbenv][:root_path] %>
+  <% if node[:passenger][:version].match(/^3/) %>
+  PassengerDefaultRuby <%= node[:passenger][:rbenv][:binary] %>
+  <% else %>
   PassengerRuby <%= node[:passenger][:rbenv][:binary] %>
+  <% end %>
 <% end %>
